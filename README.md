@@ -76,7 +76,7 @@ s
 5. The `sample_images` folder contains the images of visualizations from the ETL notebook and the working Web app for the purpose of quick demonstration in the results section below.
 
 ## Results<a name="results"></a>
-Some visualizations from this project
+`Some visualizations from this project`
 
 - Number of messages in each genre
 ![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/message_genre.PNG) 
@@ -85,7 +85,7 @@ Some visualizations from this project
 ![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/categories.PNG) 
 
 - Web app interface
-![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/web app interface.PNG) 
+![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/web%20app%20interface.PNG) 
 
 - Directing message to web app for classification
 ![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/message.PNG) 
@@ -95,7 +95,6 @@ Some visualizations from this project
 
 - Statistics of word and character counts of messages in the training data
 ![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/stats.PNG) 
-
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 Must give credit to Udacity for the data and python 3 notebook.
