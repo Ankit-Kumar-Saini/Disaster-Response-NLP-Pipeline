@@ -8,15 +8,17 @@ from sqlalchemy import create_engine
 def load_data(messages_filepath, categories_filepath):
     """
     This function will load the datasets specified by the filepaths 
-    in the arguments passed to the function and then merge the two
-    datasets on id column.
+    in the arguments passed to the function.
+
+    It will merge the two datasets into a single dataframe using id 
+    column.
     
-    Args:
-        messages_filepath: file path of messages dataset
-        categories_filepath: file path of categories/labels dataset
+    Parameters:
+    messages_filepath (string): file path of messages dataset
+    categories_filepath (string): file path of categories/labels dataset
         
     Returns:
-        df: merged dataframe
+    df (pandas dataframe): merged dataframe
         
     """
     # load the datasets
@@ -34,12 +36,19 @@ def clean_data(df):
     This function will clean the dataframe so that each row represents 
     single observation and each column represents single variable.
     
-    Args: 
-        df: raw dataframe
+    It splits the content of the categories column into separate columns 
+    so that each category becomes a column in the dataframe. A value of 1 
+    in any category column marks the presence of that category while a 
+    value of 0 means the absence of that category. It also drops the duplicate
+    entries from the dataframe.
+
+    Parameters: 
+    df (pandas dataframe): raw dataframe (dirty data)
         
     Returns:
-        df: cleaned dataframe
+    df (pandas dataframe): cleaned dataframe
     """
+
     # split each category into a column
     categories_df = df.categories.str.split(';', n = -1, expand = True)
     
@@ -86,17 +95,29 @@ def clean_data(df):
 
 def save_data(df, database_filename):
     """
-    This function will store the dataframe into a database.
+    This function will store the cleaned dataframe into a sql database.
     
-    Args:
-        df: cleaned dataframe
-        database_filename: name of the database file
+    Parameters:
+    df (pandas dataframe): cleaned dataframe
+    database_filename (string): name of the database file
+
+    Returns:
+    None
     """
+
+    # create connection to sqlite database
     engine = create_engine('sqlite:///' + database_filename) 
+    # store dataframe in sql database
     df.to_sql('messages', engine, index = False)
 
 
 def main():
+	"""
+	This function will call other helper functions defined above to 
+	perform the data preprocessing task.
+	"""
+
+	# Check the number of arguments passed to the function
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]

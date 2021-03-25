@@ -1,7 +1,5 @@
 import sys 
 import os
-sys.path.append(os.path.abspath("/home/workspace/models"))
-from train_classifier import *
 
 import json
 import plotly
@@ -16,15 +14,36 @@ from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
+# import function from train_classifier.py
+sys.path.append(os.path.abspath("/home/workspace/models"))
+from train_classifier import *
+
 
 app = Flask(__name__)
 
 def tokenize(text):
+    """
+    This function will transform the raw text into clean text.
+    
+    It will tokenize input text message, lowercase each character
+    and then apply lemmatization on lowercased tokens.
+
+    Parameters:
+    text (string): raw text message
+
+    Returns:
+    clean_tokens (list): clean tokenized text
+    """
+
+    # tokenize the input text
     tokens = word_tokenize(text)
+    # create lemmatizer object
     lemmatizer = WordNetLemmatizer()
 
     clean_tokens = []
+    # iterate over the tokens
     for tok in tokens:
+        # lemmatize, lowercase and strip spaces
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
         clean_tokens.append(clean_tok)
 
@@ -44,24 +63,22 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/index')
 def index():
     
-    # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
+    # number of messages in each genre
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
-    # category counts
+    # number of messages in each category
     category_counts = df.astype(bool).sum(axis = 0).iloc[2:]
     category_names = list(df.astype(bool).sum(axis = 0).iloc[2:].index)
     
-    # number of words
+    # number of words in each message
     num_words = df['message'].apply(lambda x: len(x.split()))
     message_ids = [i for i in range(len(df))]
     
-    # number of characters
+    # number of characters in each message
     num_char = df['message'].str.len()
     
-    # create visuals
-    # TODO: Below is an example - modify to create your own visuals
+    # create visuals from the training data
     graphs = [
         {
             'data': [
@@ -146,6 +163,7 @@ def index():
     
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
+
 
 
 # web page that handles user query and displays model results

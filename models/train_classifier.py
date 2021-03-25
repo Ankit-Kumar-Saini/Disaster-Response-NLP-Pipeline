@@ -32,17 +32,24 @@ from sklearn.metrics import (confusion_matrix,
 
 def add_features(df):
     """
-    This function will create additional features to improve the performace
-    of the model. Features such as length of the message, number of words, 
-    number of non stopwords and average word length in each message will be
-    created by this method.
+    This function will clean the input text messages and create additional 
+    features to improve the performace of the model. 
+
+    It will remove punctuations, lower case all the text messages and 
+    apply lemmatization on the tokenized text. It will create new features 
+    such as the length of the message, number of words in each message, 
+    number of non stopwords in each message and average word length of each 
+    message. Set of stopwords is also modified by removing negation words.
+    Finally stopwords and words with length <= 2 have been removed from 
+    the processed text messages.
     
-    Args: 
-        df: original dataframe
+    Parameters: 
+    df (pandas dataframe): dataframe containing text messages
         
     Returns:
-        df: dataframe with new added features
+    df (pandas dataframe) : dataframe with new added features
     """
+
     # create a set of stopwords
     StopWords = set(stopwords.words('english'))
     
@@ -86,14 +93,15 @@ def add_features(df):
 
 def load_data(database_filepath):
     """
-    This function will load the stored dataset from the database.
+    This function will load the stored dataset from the sql database.
     
-    Args:   
-        database_filepath: path of the database file
+    Parameters:   
+    database_filepath (string): path of the database file
         
     Returns:
-        df: dataframe loaded from the database
+    df (pandas dataframe): dataframe loaded from the database
     """
+
     # create sql engine
     engine = create_engine('sqlite:///' + database_filepath)
     
@@ -106,7 +114,7 @@ def load_data(database_filepath):
     # create additional features
     df = add_features(df)
     
-    # features list
+    # list of features 
     features = ['processed_text', 'genre', 'length', 'num_words', 'non_stopwords', 'avg_word_len']
     
     # return features, labels and category names
@@ -114,13 +122,19 @@ def load_data(database_filepath):
 
 
 def tokenizer(text):
-    """
-    This function will transform the raw text by applying few transformations
-    Args:
-        text: messages (raw text)
+  """
+    This function will transform the raw text into clean text.
+    
+    It will tokenize input text message, lowercase each character
+    and then apply lemmatization on lowercased tokens.
+
+    Parameters:
+    text (string): raw text message
+
     Returns:
-        clean_tokens: clean tokenized text
+    clean_tokens (list): clean tokenized text
     """
+
     # remove punctuations from raw text
     text = re.sub(r'[^\w\s]', '', text) 
     
@@ -142,9 +156,13 @@ def tokenizer(text):
 
 class TextColumnSelector(BaseEstimator, TransformerMixin):
     """
-    Transformer to select a single column from the data frame to perform additional transformations.
-    This class will select columns containing text data.
+    This class will create Transformer to select a single column from 
+    the dataframe to perform transformations in sklearn pipeline. 
+    This class inherits from BaseEstimator and TransformerMixin classes
+    It will select columns containing text data from the dataframe when 
+    provided with the name of the column.
     """
+
     def __init__(self, key):
         self.key = key
         
@@ -157,9 +175,13 @@ class TextColumnSelector(BaseEstimator, TransformerMixin):
     
 class NumColumnSelector(BaseEstimator, TransformerMixin):
     """
-    Transformer to select a single column from the data frame to perform additional transformations.
-    This class will select the columns containing numeric data.
+    This class will create Transformer to select a single column from 
+    the dataframe to perform transformations in sklearn pipeline. 
+    This class inherits from BaseEstimator and TransformerMixin classes
+    It will select columns containing numeric data from the dataframe when 
+    provided with the name of the column.
     """
+
     def __init__(self, key):
         self.key = key
     
@@ -172,8 +194,11 @@ class NumColumnSelector(BaseEstimator, TransformerMixin):
     
 class CustomLabelBinarizer(BaseEstimator, TransformerMixin):
     """
-    This class will create custom label binarizer for one hot encoding the genre column.
+    This class inherits from BaseEstimator and TransformerMixin classes.
+    It will create custom label binarizer for one hot encoding string 
+    categorical columns.
     """
+
     def __init__(self, sparse_output = False):
         self.sparse_output = sparse_output
         
@@ -188,11 +213,16 @@ class CustomLabelBinarizer(BaseEstimator, TransformerMixin):
 
 def build_model():
     """
-    This function will create separate pipelines to process individual columns. To select
-    individual columns, this function will use TextColumnSelector and NumColumnSelector.
-    To process selected features in parallel, features unions are used. 
-    Random Forest is used as the classifier in the pipeline.
-    
+    This function will create separate pipelines to process individual columns 
+    of the dataset and build the final model using individual pipelines.
+
+    To select individual columns from the dataframe, this function will use 
+    TextColumnSelector and NumColumnSelector classes. These separate pipelines
+    will be combined and their data will be processed in parallel using 
+    feature unions. StandardScaler is used to standardize the numeric data
+    and TfidfVectorizer is used to transform the text data. Random Forest 
+    is used as the classifier in the pipeline. GridSearchCV is used for
+    hyperparameter tuning.
     """
     
     # pipeline to process num_words column
@@ -264,13 +294,16 @@ def build_model():
     
 def evaluate_model(model, X_test, Y_test, category_names): 
     """
-    This function will evaluate the model by calculating f1 score,
-    precision score, recall score and classification report
+    This function will evaluate the trained model by calculating f1 score,
+    precision score, recall score and classification report on test data
     
-    Args:
-        X_test: test features 
-        Y_test: ground truth labels of test data
+    Parameters:
+    model: trained multioutput classifier model
+    X_test (pandas dataframe): test features to evaluate model
+    Y_test (numpy array): ground truth labels of test data
+    category_names (list of strings): name of the categories
     """
+
     # make predictions on validation data
     y_pred = model.predict(X_test)
     
@@ -297,14 +330,27 @@ def evaluate_model(model, X_test, Y_test, category_names):
         print(classification_report(Y_test.iloc[:, i], y_pred[:, i]))
 
 
+
 def save_model(model, model_filepath):
     """
-    Save the model using pickle library
+    This function will save the trained model using pickle library.
+
+    Parameters:
+    model: trained multioutput classifier model
+    model_filepath (string): name of the file to save model
     """
+
     pickle.dump(model, open(model_filepath, 'wb'))
 
 
+
 def main():
+    """
+    This function will call other helper functions to build, train,
+    evaluate and save the model.
+    """
+
+    # Check the number of arguments passed to the function
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
