@@ -79,22 +79,22 @@ s
 Some visualizations from this project
 
 - Number of messages in each genre
-![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/master/sample%20images/message_genre.PNG) 
+![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/message_genre.PNG) 
 
 - Number of messages in each category
-![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/master/sample%20images/categories.PNG) 
+![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/categories.PNG) 
 
 - Web app interface
-![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/master/sample%20images/web app interface.PNG) 
+![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/web app interface.PNG) 
 
 - Directing message to web app for classification
-![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/master/sample%20images/message.PNG) 
+![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/message.PNG) 
 
 - Classification result of above message
-![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/master/sample%20images/message_classification.PNG) 
+![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/message_classification.PNG) 
 
 - Statistics of word and character counts of messages in the training data
-![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/master/sample%20images/stats.PNG) 
+![alt text](https://github.com/Ankit-Kumar-Saini/Disaster-Response-NLP-Pipeline/blob/main/sample%20images/stats.PNG) 
 
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
