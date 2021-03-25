@@ -57,7 +57,7 @@ s
 4. jupyter notebooks folder
 	1. categories.csv
 	2. messages.csv
-     	3. ETL Pipeline Preparation.ipynb
+	3. ETL Pipeline Preparation.ipynb
 	4. ML Pipeline Preparation.ipynb
 
 5. sample images folder
